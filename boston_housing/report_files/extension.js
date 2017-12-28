@@ -31,7 +31,7 @@ div#header, div#site {
     <script>
       require.config({
           
-          urlArgs: "v=20171220004317",
+          urlArgs: "v=20171223211337",
           
           baseUrl: '/static/',
           paths: {
@@ -115,7 +115,7 @@ div#header, div#site {
 <body class=""
  
   
-    data-jupyter-api-token="2ad3552a5eda581714e57fa8ce7bcfeb5309a447b4001113"
+    data-jupyter-api-token="57e794ce04414ec91522caf80e1ab44bfd505019c6084d43"
   
  
 dir="ltr">
@@ -129,7 +129,7 @@ dir="ltr">
 
 <div id="header">
   <div id="header-container" class="container">
-  <div id="ipython_notebook" class="nav navbar-brand"><a href="/tree?token=2ad3552a5eda581714e57fa8ce7bcfeb5309a447b4001113" title='dashboard'>
+  <div id="ipython_notebook" class="nav navbar-brand"><a href="/tree?token=57e794ce04414ec91522caf80e1ab44bfd505019c6084d43" title='dashboard'>
       <img src='/static/base/images/logo.png?v=641991992878ee24c6f3826e81054a0f' alt='Jupyter Notebook'/>
   </a></div>
 
