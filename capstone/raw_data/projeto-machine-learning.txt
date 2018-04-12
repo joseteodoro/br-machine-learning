@@ -1,0 +1,65 @@
+Trading and Finance with cryptocoins
+
+O mercado de criptomoedas e o boom do bitcoin;
+
+Moedas famosas como ethereum, ripple e bitcoin apresentam crescimento mais ameno que outras menos conhecidas como 1ST, 2GIVE, ADA, BITB, DOGE, MANA, RDD, VOX, XDN, XLM e XVG.
+
+Quando essas moedas menores aumentam de valor, esse aumento pode girar entre 30% a 250% em poucas horas. Assim como essas moedas aumentam o preco, elas tambem caem em questao de horas.
+
+O ponto para venda nao sera tratado nesse projeto, trateremos apenas da identificacao do inicio do crescimento acentuado mediante a especulacao do mercado.
+
+O racional esta no aumento do preco devido 'a especulacao e interesse das pessoas pela moeda. Nessas situacoes, o preco comeca a subir rapido e o numero de pessoas interessadas naquela moeda espeifica aumenta muito (tambem em questao de horas).
+
+Neste contexto, minha proposta 'e criar um modelo para tentar predizer se uma moeda esta entrando nesta fase de aumento vertiginoso baseado no aumento do volume de negociacoes e no movimento e aumento do preco em um curto periodo de tempo.
+
+#############
+
+coletei os dados de novembro/2017 a janeiro 2018. Perfazendo uma serie de 1715 pontos por moeda. As moedas coletadas foram:  1ST, 2GIVE, ADA, BITB, DOGE, MANA, RDD, VOX, XDN, XLM e XVG.
+Escolhi essas moedas porque sao moedas de baixo valor e que tiveram aumentos / reducoes de precos acentuados em mais de uma ocasiao durante o periodo de coleta.
+
+raw inputs:
+    MarketName; nome do mercado
+    TimeStamp; (timestamp da amostra)
+    Volume; valor total da moeda que esta circulando naquela exchange
+    Last; ultimo preco praticado
+    OpenSellOrders;quantidade de ofertas de venda (pessoas interessads em vender a moeda)
+    OpenBuyOrders; quantidade de ofertas de compra (pessoas interessads em comprar a moeda)
+    Bid; Maior valor numa oferta de compra
+    Ask; Menor valor numa oferta de venda
+
+Esses dados caracterizam uma serie temporal de informacoes sobre uma criptomoeda. Essa serie temporal sera transformada em
+amostras independentes para que sejam analisadas mediante os algoritmos de aprendizado supervisionado.
+Por exemplo, (falar exemplo de como vou tansformar serie temporal em amostrar para ML)
+A partir desses dados coletados, vou realizar a transformacao dos dados para que consiga usar os pontos de timeseries como se fossem amostras independentes.
+
+Preciso normalizar os conjuntos de dados porque os valores de `bid`, `ask` e `last` variam de moeda para moeda.
+
+
+X^i e' um ponto qualquer de uma das series em raw_data.
+Os dados utilizados para treinamento e teste (X'^i) serao gerados a partir desse X^i do seguinte modo:
+
+MarketName;
+Volume_d_1: X[Volume]^i - 5 / X[Volume]^i
+Volume_d_3: X[Volume]^i - 10 / X[Volume]^i
+Last_d_1: X[Last]^i - 5 / X[Last]^i
+Last_d_3: X[Last]^i - 10 / X[Last]^i
+OpenSellOrders_d_1: X[OpenSellOrders]^i - 5 / X[OpenSellOrders]^i
+OpenSellOrders_d_3: X[OpenSellOrders]^i - 10 / X[OpenSellOrders]^i
+OpenBuyOrders_d_1: X[OpenBuyOrders]^i - 5 / X[OpenBuyOrders]^i
+OpenBuyOrders_d_3: X[OpenBuyOrders]^i - 10 / X[OpenBuyOrders]^i
+Bid_d_1: X[Bid]^i - 5 / X[Bid]^i
+Bid_d_3: X[Bid]^i - 10 / X[Bid]^i
+Ask_d_1: X[Ask]^i - 5 / X[Ask]^i
+Ask_d_3: X[Ask]^i - 10 / X[Ask]^i
+Y: X[Last]^i - 10 * 1.15 < X[Last]^i
+
+Realizarei essas transformacoes para conseguir uma normalizacao dos dados mediante os diferentes valores das moedas e para transformar os dados da serie historica em amostras de dados passiveis de serem analisadas pelos classificadores. E para determinar o rotulo de crescimento acentuado ou nao, vou considerar que o preco precisa ser ao menos 15% maior que o preco no i-10. Se a diferenca for menor que o aumento de 15%, a resposta sera' `SKIP`, caso contrario sera' `BUY`.
+
+############
+
+Sobre o metodo de definicao do modelo:
+Vou analisar os resultado iniciais resultantes dos classificadores: DummyClassifier, Regressao Logistica, KNN e SVM. Para essa analise, vou utilizar crossvalidation para identificar qual algoritmo performa melhor (f1). A partir do algoritmo mais performatico, farei a GridSearch para fazer o ajuste fino dos parametros do modelo (tambem usando o f1).
+
+Espera-se que os modelos treinados sejam ao menos mais efifazes que o DummyClassifier. Por este motivo, estamos utilizando ele como benchmark para avaliacao inicial dos modelos.
+
+Estou utilizando o f1 pelo modelo ser de classificacao binaria e porque ja utilizamos essa metrica para avaliacao de resultados durante o nanodegree.
